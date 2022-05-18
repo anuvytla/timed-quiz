@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!--Container for instruction and start button-->
+    <!--Landing page for the quiz-->
     <section id="start-page">
         <h2>Instructions:</h2>
         <ol>
-            <li>You will be provided with <b>20mins</b> time to complete quiz</li>
+            <li>You will be provided with <b>10mins</b> time to complete quiz</li>
             <li>Timer starts once you click start button</li>
             <li>Click next button which is situated buttom-right to continue to the next question</li>
             <li>Once completed answering all the questions, provide your intial and then click on the submit button</li>
@@ -20,13 +20,37 @@
         </ol>
         <button id="start-btn">Start</button>
     </section>
+    <!--Questionnaire Page-->
     <section id="quiz-page" style="display: none;">
-        <button>previous</button>
-        <button>next</button>
+        <header>
+            <button>quit</button>
+            <div>question list</div>
+            <div id="timer" style="text-align:left;"></div>
+        </header>
+        <!--Questions Section-->
+        <section>
+            questions
+        </section>
+        <footer>
+            <button>previous</button>
+            <button>next</button>
+        </footer>
+        
     </section>
+    <!--Results Page-->
     <section id="result-page" style="display: none;">
+        <section>
+            <div>You have completed the Quiz!!</div>
+            <div>Score</div>
+        </section>
+        <section>
+            <button>Retake Quiz</button>
+            <button>Quit Quiz</button>
+
+        </section>
 
     </section>
+ <script src="./scriptq.js"></script>   
  <script src="./script.js"></script>   
 </body>
 </html>
