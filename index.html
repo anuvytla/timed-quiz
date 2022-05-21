@@ -29,30 +29,28 @@
         </header>
         <!--Questions Section-->
         <section>
+            <!-- paragraph to display the question -->
             <p id="question"></p>
+            <!-- ordered list for displaying list of options -->
             <ol id="option-list">
-
             </ol>
-        
         </section>
+        <!-- Footer section for the quiz page. previous & Next button for navigation. -->
         <footer>
             <button id="previous">previous</button>
             <button id="next">next</button>
         </footer>
-        
     </section>
     <!--Results Page-->
     <section id="result-page" style="display: none;">
         <section>
             <div>You have completed the Quiz!!</div>
-            <div>Score</div>
+            <div>Score: <span id="score"></span></div>
         </section>
         <section>
             <button id="retake">Retake Quiz</button>
             <button id="quit">Quit Quiz</button>
-
         </section>
-
     </section>
     <script src="./assets/js/js_questions.js"></script>   
     <script src="./assets/js/script.js"></script>   
