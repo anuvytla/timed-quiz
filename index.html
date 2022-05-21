@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript Quiz</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
     <!--Landing page for the quiz-->
     <section id="start-page">
-        <h2>Instructions:</h2>
+        <h2>Instructions:</h2><br>
         <ol>
             <li>You will be provided with <b>10mins</b> time to complete quiz</li>
             <li>Timer starts once you click start button</li>
@@ -24,16 +24,20 @@
     <section id="quiz-page" style="display: none;">
         <header>
             <button>quit</button>
-            <div>question list</div>
-            <div id="timer" style="text-align:left;"></div>
+            <div id="question-counter"></div>
+            <div id="timer" style="text-align:left"></div>
         </header>
         <!--Questions Section-->
         <section>
-            questions
+            <p id="question"></p>
+            <ol id="option-list">
+
+            </ol>
+        
         </section>
         <footer>
-            <button>previous</button>
-            <button>next</button>
+            <button id="previous">previous</button>
+            <button id="next">next</button>
         </footer>
         
     </section>
@@ -44,13 +48,13 @@
             <div>Score</div>
         </section>
         <section>
-            <button>Retake Quiz</button>
-            <button>Quit Quiz</button>
+            <button id="retake">Retake Quiz</button>
+            <button id="quit">Quit Quiz</button>
 
         </section>
 
     </section>
- <script src="./scriptq.js"></script>   
- <script src="./script.js"></script>   
+    <script src="./assets/js/js_questions.js"></script>   
+    <script src="./assets/js/script.js"></script>   
 </body>
 </html>
