@@ -85,8 +85,11 @@ header, footer {
     border:1rem;
 }
 
-#post {
-    display: inline-block;
-    margin-top: 150px;
-    margin-left: 1000px;
+table {
+    margin: 5px;
+}
+
+td, th {
+    text-align: center;
+    border: 1px;
 }

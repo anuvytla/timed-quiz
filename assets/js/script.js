@@ -12,6 +12,9 @@ var previousEl = document.querySelector('#previous');
 var scoreEl = document.querySelector('#score');
 var scoreFormEl = document.querySelector('#score-form');
 var intialInputEl = document.querySelector('#intial');
+var quitButtonEl = document.querySelector('#quit');
+var leaderboardTableEl = document.querySelector('#leaderboard');
+var timeRemainingInSecs;
 var currentQuestionIndex = 0;
 var intervalTimer;
 var results;
@@ -72,19 +75,27 @@ function displayQuestion(questionIndex) {
     previousEl.disabled = !(questionIndex > 0);
 }
 
+quitButtonEl.addEventListener('click', exitQuiz);
+
 function exitQuiz() {
     // re-direct to start page.
     retakeQuiz();
 
     // Stop the timer.
     clearInterval(intervalTimer);
+
+    // Clear results array
+    results = Array(questions.length).fill(-1);
+    
+    // Reset current question index.
+    currentQuestionIndex = 0;
 }
 
 function displayResults() {
     // Stop the timer.
     clearInterval(intervalTimer);
 
-    // calculate score
+    // calculate score based on number of questions.
     score = 0;
     for (var i=0; i<results.length; i++) {
         // check if recored answer matches with actual answer. if yes increment the score.
@@ -92,8 +103,16 @@ function displayResults() {
             score++
         }
     }
+
+    // Add bonus for remaining time. Rounded to 2 decimals.
+    var bonusScore =  Math.round(timeRemainingInSecs * 100/60)/100
+    score += bonusScore;
+
     // display score
     scoreEl.textContent = score;
+
+    // Display saved scores.
+    displayLeaderboard();
 
     //  Navigate to result page 
     quizPageEl.style.display = "none";
@@ -102,19 +121,19 @@ function displayResults() {
 
 function startTimer() {
    // initialize timer 
-   var secondsLeft = 10 * 60;
+   timeRemainingInSecs = 10 * 60;
    // Initialize the timer to fire every 1 second.
    intervalTimer = setInterval(function(){
-       secondsLeft--;
+        timeRemainingInSecs--;
 
        // Calculate minutes and seconds remaining.
-       var mins = Math.floor(secondsLeft/60);
-       var secs = secondsLeft % 60;
+       var mins = Math.floor(timeRemainingInSecs/60);
+       var secs = timeRemainingInSecs % 60;
        // Update timer display
        timeEl.textContent = `Time Remaining  ${mins}:${secs}`;
 
        // Stop the quiz and go to results page if we are out of time.
-       if (secondsLeft === 0) {
+       if (timeRemainingInSecs <= 0) {
            displayResults();
        }
    }, 1000);
@@ -123,7 +142,6 @@ function startTimer() {
 nextEl.addEventListener('click' , onNext);
 
 function onNext() {
-
     // increment index to next question.
     currentQuestionIndex++;
     // check if index withinrange, if yes display next question else display results.
@@ -147,6 +165,7 @@ function onPrevious() {
 
 function retakeQuiz() {
     // Navigate to start page
+    quizPageEl.style.display = "none";
     resultPageEl.style.display = "none";
     startPageEl.style.display = "flex";
 }
@@ -163,6 +182,12 @@ function onOptionSelection(event) {
     if(event.target.nodeName === 'LI') {
         // Record the selected option in results array.
         results[currentQuestionIndex] = parseInt(event.target.getAttribute("option-index"));
+
+        // if the answer is wrong, subtract 60 seconds from remaining time.
+        if(results[currentQuestionIndex] !== questions[currentQuestionIndex]['answer']) {
+            timeRemainingInSecs -= 60;
+        }
+
         highlightCurrentOptions();
     }
 }
@@ -211,4 +236,46 @@ function saveScore(event) {
     leaderboard.push(score_card);
     // Write updated leaderboard to the local storage.
     localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+
+    displayLeaderboard();
+}
+
+function displayLeaderboard() {
+    // Clear the all entries first.
+    while (leaderboardTableEl.firstChild) {
+        leaderboardTableEl.removeChild(leaderboardTableEl.firstChild);
+    }
+
+    // Get list of saved scores.
+    var leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+
+    // Sort based on scores.
+    leaderboard.sort(function(sc1, sc2){return sc2.score - sc1.score});
+
+    // Create header section for the leaderboard.
+    var headerRow = document.createElement('tr');
+    var initialsHeader = document.createElement('th');
+    initialsHeader.textContent = 'Initials';
+    headerRow.appendChild(initialsHeader);
+    var scoreHeader = document.createElement('th');
+    scoreHeader.textContent = "Score";
+    headerRow.appendChild(scoreHeader);
+    leaderboardTableEl.appendChild(headerRow);
+
+    for(var i=0; i < leaderboard.length; i++) {
+        // get the score card.
+        var score_card = leaderboard[i];
+        // create a table row for this score card.
+        var trow = document.createElement('tr');
+        // create a table column for initials.
+        var initialsCol = document.createElement('td');
+        initialsCol.textContent = score_card.initial;
+        trow.appendChild(initialsCol);
+        // create a table column for score.
+        var scoreCol = document.createElement('td');
+        scoreCol.textContent = score_card.score;
+        trow.appendChild(scoreCol);
+        // Append table row to leaderboard table.
+        leaderboardTableEl.appendChild(trow);
+    }
 }

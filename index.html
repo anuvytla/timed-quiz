@@ -14,9 +14,10 @@
         <ol>
             <li>You will be provided with <b>10mins</b> time to complete quiz</li>
             <li>Timer starts once you click start button</li>
-            <li>Click next button which is situated buttom-right to continue to the next question</li>
-            <li>Once completed answering all the questions, provide your intial and then click on the submit button</li>
-            <li>After submitting your intial You will be provided with you score and then click on the exit button </li>
+            <li>For every wrong answer 1 minute is reduce from remaining time</li>
+            <li>Use Previous and Next Buttons to navigate between questions</li>
+            <li>Total score = correct answer + bonus for remaining time</li>
+            <li>Once completed answering all the questions, provide your intial and then click on the submit to save your score</li>
         </ol>
         <button id="start-btn">Start</button>
     </section>
@@ -50,16 +51,18 @@
                 <input type="text" id="intial">
                 <input type="submit" value="Submit">
             </form>
-
         </section>
         
         <section>
             <div>You have completed the Quiz!!</div>
             <div>Score: <span id="score"></span></div>
         </section>
-        <section id="post">
+        <section>
+            <table id="leaderboard">
+            </table>
+        </section>
+        <section>
             <button id="retake">Retake Quiz</button>
-            <button id="quit">Quit Quiz</button>
         </section>
     </section>
     <script src="./assets/js/js_questions.js"></script>   
