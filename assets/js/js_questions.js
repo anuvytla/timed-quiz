@@ -56,7 +56,8 @@ let questions = [
     { 
         num : 10,
         question:"Which jQuery method returns the direct parent element of the selected element?" , 
-        answer:"parent() " , options: ["ancestors()","ancestor()","parents()","parent() "]
+        answer:3,
+         options: ["ancestors()","ancestor()","parents()","parent() "]
     },
     { 
         num : 11,
@@ -67,7 +68,7 @@ let questions = [
     { 
         num : 12,
         question: "How do you declare a JavaScript variable?", 
-        answer: 0, 
+        answer: 1, 
         options: ["v carName;","var carName;  ","variable carName;"]
     },
     { 
