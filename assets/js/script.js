@@ -10,6 +10,8 @@ var questionCounterEl =document.querySelector('#question-counter');
 var nextEl = document.querySelector('#next');
 var previousEl = document.querySelector('#previous');
 var scoreEl = document.querySelector('#score');
+var scoreFormEl = document.querySelector('#score-form');
+var intialInputEl = document.querySelector('#intial');
 var currentQuestionIndex = 0;
 var intervalTimer;
 var results;
@@ -27,7 +29,7 @@ function startQuiz(){
     
     // hide start section and show quiz section.
     startPageEl.style.display = "none";
-    quizPageEl.style.display = "block";
+    quizPageEl.style.display = "flex";
     // Initialize question index to the first one (index 0).
     currentQuestionIndex = 0;
     // Display the current question.
@@ -65,6 +67,7 @@ function displayQuestion(questionIndex) {
         optionListEl.appendChild(optionEl);
     }
 
+    highlightCurrentOptions();
     // if index > 0 enable previous btn
     previousEl.disabled = !(questionIndex > 0);
 }
@@ -94,7 +97,7 @@ function displayResults() {
 
     //  Navigate to result page 
     quizPageEl.style.display = "none";
-    resultPageEl.style.display = "block";
+    resultPageEl.style.display = "flex";
 }
 
 function startTimer() {
@@ -145,17 +148,67 @@ function onPrevious() {
 function retakeQuiz() {
     // Navigate to start page
     resultPageEl.style.display = "none";
-    startPageEl.style.display = "block";
-
+    startPageEl.style.display = "flex";
 }
 
 optionListEl.addEventListener('click', onOptionSelection);
 
 // Event handler for selecting an option.
 function onOptionSelection(event) {
+    // If the question is already answered. Don't take second attempt.
+    if(results[currentQuestionIndex] !== -1) {
+        return;
+    }
     // Check if the clicked element is li.
     if(event.target.nodeName === 'LI') {
         // Record the selected option in results array.
         results[currentQuestionIndex] = parseInt(event.target.getAttribute("option-index"));
+        highlightCurrentOptions();
     }
+}
+
+function highlightCurrentOptions() {
+    // Question is not answered. Do not highlight anything.
+    if(results[currentQuestionIndex] === -1) {
+        return;
+    }
+    
+    // iterate over all child nodes.
+    optionListEl.childNodes.forEach(li => {
+        // Clear background color first.
+        li.style.backgroundColor = '';
+        // If this is selected, set background color to red.
+        if(parseInt(li.getAttribute('option-index')) === results[currentQuestionIndex]) {
+            li.style.backgroundColor = '#c7474ddd';
+        }
+        // If this is selected and mathces the correct answered, set background color to green.
+        if(parseInt(li.getAttribute('option-index')) === parseInt(questions[currentQuestionIndex]['answer'])) {
+            li.style.backgroundColor = '#45b84ddd';
+        }
+    });
+}
+
+scoreFormEl.addEventListener('submit', saveScore);
+
+function saveScore(event) {
+    // Prevent page refresh on form submission.
+    event.preventDefault();
+    // Get the initials.
+    var initials = intialInputEl.value.trim();
+    // Initialize a JSON object to save.
+    var score_card = {
+        initial: initials,
+        score: score
+    }
+
+    // Get saved scores from local storage.
+    var leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+    // If no scores are saved yet, create an empty empty of scores.
+    if(leaderboard === null) {
+        leaderboard = Array();
+    }
+    // Add current score card to the leaderboard.
+    leaderboard.push(score_card);
+    // Write updated leaderboard to the local storage.
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
 }

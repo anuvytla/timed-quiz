@@ -23,14 +23,14 @@
     <!--Questionnaire Page-->
     <section id="quiz-page" style="display: none;">
         <header>
-            <button>quit</button>
-            <div id="question-counter"></div>
+            <button id="quit">quit</button>
             <div id="timer" style="text-align:left"></div>
         </header>
         <!--Questions Section-->
         <section>
+            <p id="question-counter"></p>
             <!-- paragraph to display the question -->
-            <p id="question"></p>
+            <p id="question"></p><br><br>
             <!-- ordered list for displaying list of options -->
             <ol id="option-list">
             </ol>
@@ -44,10 +44,20 @@
     <!--Results Page-->
     <section id="result-page" style="display: none;">
         <section>
+            <h3>Enter intial to save your score</h3>
+            <form id="score-form">
+                <label for="initial"><strong>Intial:</strong></label>
+                <input type="text" id="intial">
+                <input type="submit" value="Submit">
+            </form>
+
+        </section>
+        
+        <section>
             <div>You have completed the Quiz!!</div>
             <div>Score: <span id="score"></span></div>
         </section>
-        <section>
+        <section id="post">
             <button id="retake">Retake Quiz</button>
             <button id="quit">Quit Quiz</button>
         </section>
